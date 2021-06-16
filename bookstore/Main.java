@@ -43,7 +43,7 @@ public class Main {
 		myPrint("----------- BOOK MANAGER ----------- ");
 		myPrint("1. Add book");		// x
 		myPrint("2. Edit book");	// x
-		myPrint("3. Delete book");	//
+		myPrint("3. DDDelete book");	//
 		myPrint("4. Find book");	// x
 		myPrint("5. List book");	// x
 		myPrint("6. Exit");			// x
