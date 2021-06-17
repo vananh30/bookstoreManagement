@@ -22,8 +22,11 @@ public class Main {
 					case 2: editBook(); 	break;
 					case 3: deleteBook(); 	break;
 					case 4: findBook(); 	break;
-					case 5: listBook(); 	break;
-					case 6: 
+					case 5: listBook("price",0); 	break; // name 1 name A-Z
+					case 6:	listBook("price", 1); 	break; // name 0 name Z-A
+					case 7:	listBook("name", 1); 	break; // price 1 price low - high
+					case 8:	listBook("name", 0); 	break;	// price 0 price High - Low
+					case 9:
 					default:
 						flag = false;
 						break;
@@ -45,8 +48,11 @@ public class Main {
 		myPrint("2. Edit book");	// x
 		myPrint("3. DDDelete book");	//
 		myPrint("4. Find book");	// x
-		myPrint("5. List book");	// x
-		myPrint("6. Exit");			// x
+		myPrint("5. List book (Price: High > Low)");	// x
+		myPrint("6. List book (Price: Low > High)");
+		myPrint("7. List book (Name: A > Z)");
+		myPrint("8. List book (Name: Z > A)");
+		myPrint("9. Exit");			// x
 		myPrint("Your choise [1-6]: ");
 	}
 	
@@ -130,7 +136,12 @@ public class Main {
 		bookstoreObj.edit(bookID, bookName, bookPrice);
 	}
 	
-	public static void listBook(){
+	public static void listBook(String property, int type)
+	{
+		if(property.equals("name")&&type==1) bookstoreObj.sortNameAZ();
+		if(property.equals("name")&&type==0) bookstoreObj.sortNameZA();
+		if(property.equals("price")&&type==1) bookstoreObj.sortPriceAZ();
+		if(property.equals("price")&&type==0) bookstoreObj.sortPriceZA();
 		bookstoreObj.list();
 	}
 }

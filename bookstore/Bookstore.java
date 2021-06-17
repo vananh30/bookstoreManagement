@@ -1,41 +1,40 @@
 package bookstore;
 
+import java.util.*;
 import java.util.Scanner;
 
 public class Bookstore implements StoreInterface {
 
-
-	private static int totalItems		= 0;		// Số quyển sách hiện tại trong kho sách
 	private final int MAX_ITEMS			= 10;		// Số quyển sách lớn nhất mà kho sách chứa được
-	private Book[] listItems			= null;
+	private List listItems			= null;
 	
 	public Bookstore(){
-		listItems	= new Book[MAX_ITEMS];
+		listItems	= new LinkedList();
 	}
 	
 	public int getItemPosition(String bookID){
-		for(int i = 0; i < totalItems; i++){
-			if(bookID.equals(listItems[i].getID())==true) return i;
+		Iterator itr = listItems.iterator();
+		int i = 0;
+		while (itr.hasNext()){
+			Book bookObj = (Book) itr.next();
+			if(bookID.equals(bookObj.getID())) return i;
+			i++;
 		}
 		return -1;
 	}
 	
 	// checkFull
 	public boolean checkFull(){
-		return totalItems == MAX_ITEMS;
+		return getTotalItems() == MAX_ITEMS;
 	}
 	
 	// checkEmpty
 	public boolean checkEmpty(){
-		return totalItems == 0;
+		return listItems.isEmpty();
 	}
 
-	public static int getTotalItems() {
-		return totalItems;
-	}
-
-	public static void setTotalItems(int totalItems) {
-		Bookstore.totalItems = totalItems;
+	public int getTotalItems() {
+		return listItems.size();
 	}
 
 	// Add book
@@ -43,8 +42,7 @@ public class Bookstore implements StoreInterface {
 	public void add(Object obj) {
 		Book bookObj = (Book) obj;
 		if(!this.checkFull()){
-			this.listItems[totalItems]	= bookObj;
-			setTotalItems(Bookstore.getTotalItems()+1);
+			listItems.add(bookObj);
 			System.out.println("Add successfull!");
 		}else{
 			System.out.println("Store is full!");
@@ -57,8 +55,9 @@ public class Bookstore implements StoreInterface {
 		if(bookPosition == -1){
 			System.out.println("This book is not exist!");
 		}else{
-			listItems[bookPosition].setName(bookName);
-			listItems[bookPosition].setPrice(bookPrice);
+			Book bookObj = (Book) listItems.get(bookPosition);
+			bookObj.setName(bookName);
+			bookObj.setPrice(bookPrice);
 			System.out.println("Edit successfull!");
 		}
 	}
@@ -69,10 +68,7 @@ public class Bookstore implements StoreInterface {
 		if(bookPosition == -1){
 			System.out.println("This book is not exist!");
 		}else{
-			for(int i = bookPosition; i < totalItems - 1; i++){
-				listItems[i] = listItems[i+1];
-			}
-			Bookstore.setTotalItems(Bookstore.getTotalItems()-1);
+			listItems.remove(bookPosition);
 			System.out.println("Delete successfull!");
 		}
 	}
@@ -83,18 +79,36 @@ public class Bookstore implements StoreInterface {
 		if(bookPosition == -1){
 			System.out.println("This book is not exist!");
 		}else{
-			System.out.println(listItems[bookPosition]);
+			System.out.println(listItems.get(bookPosition));
 		}
 	}
 	
 	// list book
 	public void list(){
 		if(this.checkEmpty() == false){
-			for(int i = 0; i < totalItems; i++){
-				System.out.println(this.listItems[i]);
+			Iterator itr = listItems.iterator();
+			int i = 0;
+			while (itr.hasNext()){
+				Book bookObj = (Book) itr.next();
+				System.out.println(bookObj);
+				i++;
 			}
 		}else{
 			System.out.println("Store is empty!");
 		}
+	}
+	// Sort Name theo thu tu tang dan
+	public void sortNameAZ(){
+		Collections.sort(listItems, new NameAZComparator());
+	}
+		public void sortNameZA(){
+			Collections.sort(listItems, new NameZAComparator());
+	}
+	public void sortPriceAZ(){
+		Collections.sort(listItems, new PriceAZComparator());
+	}
+	public void sortPriceZA(){
+		Collections.sort(listItems, new PriceAZComparator());
+		Collections.reverse(listItems);
 	}
 }
