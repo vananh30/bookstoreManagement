@@ -21,12 +21,14 @@ public class Main {
 					case 1: addBook(); 		break;
 					case 2: editBook(); 	break;
 					case 3: deleteBook(); 	break;
-					case 4: findBook(); 	break;
+					case 4: findBook("id"); 	break;
 					case 5: listBook("price",0); 	break; // name 1 name A-Z
 					case 6:	listBook("price", 1); 	break; // name 0 name Z-A
 					case 7:	listBook("name", 1); 	break; // price 1 price low - high
 					case 8:	listBook("name", 0); 	break;	// price 0 price High - Low
-					case 9:
+					case 9:	findBook("max"); 	break;
+					case 10:findBook("min"); 	break;
+					case 11:
 					default:
 						flag = false;
 						break;
@@ -52,8 +54,10 @@ public class Main {
 		myPrint("6. List book (Price: Low > High)");
 		myPrint("7. List book (Name: A > Z)");
 		myPrint("8. List book (Name: Z > A)");
-		myPrint("9. Exit");			// x
-		myPrint("Your choise [1-6]: ");
+		myPrint("9. Max Price Book");
+		myPrint("10. Min Price Book");
+		myPrint("11. Exit");			// x
+		myPrint("Your choise [1-11]: ");
 	}
 	
 	public static void addBook(){
@@ -106,15 +110,28 @@ public class Main {
 		bookstoreObj.delete(bookID);
 	}
 	
-	public static void findBook(){
-		Scanner sc = new Scanner(System.in);
-		
-		String bookID	= "";
-		
-		myPrint("ID: ");
-		bookID		= sc.nextLine();
-		
-		bookstoreObj.find(bookID);
+	public static void findBook(String type){
+		switch (type){
+			case "id":
+				Scanner sc = new Scanner(System.in);
+
+				String bookID	= "";
+
+				myPrint("ID: ");
+				bookID		= sc.nextLine();
+
+				bookstoreObj.find(bookID);
+				break;
+			case "max":
+				bookstoreObj.findMax();
+				break;
+			case "min":
+				bookstoreObj.findMin();
+				break;
+			default:
+				break;
+		}
+
 	}
 	
 	public static void editBook(){

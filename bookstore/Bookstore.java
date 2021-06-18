@@ -6,18 +6,16 @@ import java.util.Scanner;
 public class Bookstore implements StoreInterface {
 
 	private final int MAX_ITEMS			= 10;		// Số quyển sách lớn nhất mà kho sách chứa được
-	private List listItems			= null;
+	private List<Book> listItems			= null;
 	
-	public Bookstore(){
-		listItems	= new LinkedList();
+	public Bookstore(){listItems	= new LinkedList<Book>();
 	}
 	
 	public int getItemPosition(String bookID){
-		Iterator itr = listItems.iterator();
+		Iterator<Book> itr = listItems.iterator();
 		int i = 0;
 		while (itr.hasNext()){
-			Book bookObj = (Book) itr.next();
-			if(bookID.equals(bookObj.getID())) return i;
+			if(bookID.equals( itr.next().getID())) return i;
 			i++;
 		}
 		return -1;
@@ -55,9 +53,8 @@ public class Bookstore implements StoreInterface {
 		if(bookPosition == -1){
 			System.out.println("This book is not exist!");
 		}else{
-			Book bookObj = (Book) listItems.get(bookPosition);
-			bookObj.setName(bookName);
-			bookObj.setPrice(bookPrice);
+			listItems.get(bookPosition).setName(bookName);
+			listItems.get(bookPosition).setPrice(bookPrice);
 			System.out.println("Edit successfull!");
 		}
 	}
@@ -86,11 +83,10 @@ public class Bookstore implements StoreInterface {
 	// list book
 	public void list(){
 		if(this.checkEmpty() == false){
-			Iterator itr = listItems.iterator();
+			Iterator<Book> itr = listItems.iterator();
 			int i = 0;
 			while (itr.hasNext()){
-				Book bookObj = (Book) itr.next();
-				System.out.println(bookObj);
+				System.out.println(itr.next());
 				i++;
 			}
 		}else{
@@ -101,7 +97,7 @@ public class Bookstore implements StoreInterface {
 	public void sortNameAZ(){
 		Collections.sort(listItems, new NameAZComparator());
 	}
-		public void sortNameZA(){
+	public void sortNameZA(){
 			Collections.sort(listItems, new NameZAComparator());
 	}
 	public void sortPriceAZ(){
@@ -110,5 +106,22 @@ public class Bookstore implements StoreInterface {
 	public void sortPriceZA(){
 		Collections.sort(listItems, new PriceAZComparator());
 		Collections.reverse(listItems);
+	}
+
+	public void findMax(){
+		if(!this.checkEmpty()){
+			Book bookObj = Collections.max(listItems, new PriceAZComparator());
+			System.out.println(bookObj);
+		}else{
+			System.out.println("Store is empty!");
+		}
+	}
+	public void findMin(){
+		if(!this.checkEmpty()){
+			sortPriceAZ();
+			System.out.println(listItems.get(0));
+		}else{
+			System.out.println("Store is empty!");
+		}
 	}
 }
